@@ -1,19 +1,25 @@
 <template>
   <div>
-    <el-button type="primary" @click="handlePrintHtml">查询</el-button>
+    <el-button type="primary" @click="handleQueryList">查询</el-button>
     <el-button type="primary" @click="handlePrintHtml">批量打印</el-button>
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="date" label="日期" width="180"> </el-table-column>
+      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
+      <el-table-column prop="address" label="地址"> </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import { reactive, ref } from 'vue'
 import { getLodop } from '@/util/LodopFuncs.js'
-// import { htmlArr } from '@/local/batch_html'
 import { getPrintHtml } from '@/service/batchPrinter'
 import { ElMessage } from 'element-plus';
 export default {
   setup() {
     // props/state
+    let tableData = ref([])
     // event function
     // console.log('htmlArr :>>>', htmlArr)
     const handlePrintHtml = async () => {
@@ -21,6 +27,26 @@ export default {
         await printEveryItem(i)
         console.log('2')
       }
+    }
+
+    const handleQueryList = () => {
+      tableData.value = [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1517 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1519 弄'
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1516 弄'
+      }]
     }
 
     /* 请求HTML */
@@ -72,7 +98,9 @@ export default {
     }
 
     return {
-      handlePrintHtml
+      handlePrintHtml,
+      handleQueryList,
+      tableData
     }
   }
 }
